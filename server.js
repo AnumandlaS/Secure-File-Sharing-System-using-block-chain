@@ -1,5 +1,5 @@
 const express = require("express");
-const fileUploadRoutes = require("./routes/upload"); // Import the upload route
+const fileUploadRoutes = require("./routes/fileRoutes"); // Import the upload route
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -21,15 +21,15 @@ app.use("/uploads", express.static("uploads")); // Serve encrypted files if need
 const uri = process.env.MONGODB_URI;
 const connectToDB = async () => {
   try {
-    await mongoose.connect(uri, { 
-      useNewUrlParser: true, 
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
       useUnifiedTopology: true,
       serverSelectionTimeoutMS: 10000, // Adjust as needed
       socketTimeoutMS: 45000, // Adjust as needed
     });
-    console.log('MongoDB connected');
+    console.log("MongoDB connected");
   } catch (error) {
-    console.error('MongoDB connection error:', error);
+    console.error("MongoDB connection error:", error);
     throw error;
   }
 };
@@ -52,49 +52,48 @@ app.use("/api/files", fileUploadRoutes);
 
 // async function insertSampleData() {
 //   try {
-//       // Insert a User
-//       const user = await UserModel.create({
-//           name: "Detective John",
-//           email: "john@example.com",
-//           password: "hashedpassword123",
-//           role: "user"
-//       });
+//     // Insert a User
+//     const user = await UserModel.create({
+//       name: "Detective John",
+//       email: "john@example.com",
+//       password: "hashedpassword123",
+//       role: "user",
+//     });
 
-//       console.log("User Created:", user);
+//     console.log("User Created:", user);
 
-//       // Insert an Admin
-//       const admin = await AdminModel.create({
-//           name: "Chief Officer",
-//           email: "admin@example.com",
-//           password: "hashedadminpassword",
-//           role: "admin",
-//           usersWithAccess: [user._id]  // Granting access to the created user
-//       });
+//     // Insert an Admin
+//     const admin = await AdminModel.create({
+//       name: "Chief Officer",
+//       email: "admin@example.com",
+//       password: "hashedadminpassword",
+//       role: "admin",
+//       usersWithAccess: [user._id], // Granting access to the created user
+//     });
 
-//       console.log("Admin Created:", admin);
+//     console.log("Admin Created:", admin);
 
-//       // Insert a File
-//       const file = await FileMOdel.create({
-//           filename: "CaseReport123.pdf",
-//           path: "/secure_storage/casereports/CaseReport123.pdf",
-//           owner: admin._id,  // Admin owns the file
-//           accessList: [user._id],  // Granting access to the user
-//           integrityHash: "xyz123456hash"
-//       });
+//     // Insert a File
+//     const file = await FileMOdel.create({
+//       filename: "CaseReport123.pdf",
+//       path: "/secure_storage/casereports/CaseReport123.pdf",
+//       owner: admin._id, // Admin owns the file
+//       accessList: [user._id], // Granting access to the user
+//       integrityHash: "xyz123456hash",
+//     });
 
-//       console.log("File Created:", file);
+//     console.log("File Created:", file);
 
-//       // Update the Admin with File reference
-//       await AdminModel.findByIdAndUpdate(admin._id, {
-//           $push: { files: file._id }
-//       });
+//     // Update the Admin with File reference
+//     await AdminModel.findByIdAndUpdate(admin._id, {
+//       $push: { files: file._id },
+//     });
 
-//       console.log("File linked to Admin ✅");
-      
+//     console.log("File linked to Admin ✅");
 //   } catch (error) {
-//       console.error("Error inserting sample data:", error);
+//     console.error("Error inserting sample data:", error);
 //   } finally {
-//       mongoose.connection.close();  // Close the connection
+//     mongoose.connection.close(); // Close the connection
 //   }
 // }
 
